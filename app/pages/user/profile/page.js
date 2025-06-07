@@ -56,6 +56,7 @@ const Page = () => {
         <div className="flex p-4">
           <div className="w-1/2 text-center cursor-pointer">
             <button
+            className="cursor-pointer "
               onClick={() => {
                 localStorage.clear();
                 router.push("/pages/signIn");
@@ -67,11 +68,11 @@ const Page = () => {
           <div className="w-0 border border-gray-300"></div>
           <div className="w-1/2 text-center">
             {data.shop ? (
-              <button onClick={() => router.push("/pages/admin/Dashbord")}>
+              <button className="cursor-pointer " onClick={() => router.push("/pages/admin/Dashbord")}>
                 Go to Shop
               </button>
             ) : (
-              <button onClick={() => router.push("/pages/admin/openShop")}>
+              <button className="cursor-pointer " onClick={() => router.push("/pages/admin/openShop")}>
                 Create shop
               </button>
             )}

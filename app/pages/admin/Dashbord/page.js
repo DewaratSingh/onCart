@@ -59,10 +59,10 @@ const page = () => {
     <div>
       <ToastContainer />
       <div>
-        <button className="px-7 bg-red-500 py-3 rounded-2xl" onClick={()=>{router.push("/pages/admin/addproduct")}}>+ Add Product</button>
+        <button className=" cursor-pointer w-full mt-6 border-indigo-500 border-2 hover:bg-[#442dd72e] text-black font-medium py-2.5 rounded-lg transition-colors mb-5" onClick={()=>{router.push("/pages/admin/addproduct")}}>+ Add Product</button>
       </div>
       <div className="flex flex-col">
-        <span className="flex bg-[#5b5959] text-white">
+        <span className="flex bg-[#442dd783] ">
           <div className="w-[120px] border-r-2">Name</div>
           <div className="w-[120px] border-r-2">Price</div>
           <div className="w-[120px] border-r-2">RealPrice</div>
@@ -74,7 +74,7 @@ const page = () => {
         </span>
         {data.length > 0 ? (
           data.map((item, index) => (
-            <div key={index} className="flex bg-[#d5d1d1]">
+            <div key={index} className="flex bg-[#d5d1d1] border-b-2">
               <div className="w-[120px] border-r-2">{item.name || "name"}</div>
               <div className="w-[120px] border-r-2">
                 {item.price || "Price"}
@@ -92,7 +92,7 @@ const page = () => {
                 {item.rating || "Rating"}
               </div>
               <div
-                className="w-[120px] border-r-2"
+                className=" cursor-pointer w-[120px] border-r-2"
                 onClick={() => {
                   updateProduct(item.id);
                 }}
@@ -100,7 +100,7 @@ const page = () => {
                 Edit
               </div>
               <div
-                className="w-[120px] border-r-2"
+                className=" cursor-pointer w-[120px] border-r-2"
                 onClick={() => {
                   deleteProduct(item.id);
                 }}

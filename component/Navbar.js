@@ -53,10 +53,10 @@ const Navbar = () => {
           <nav className="h-16 flex items-center justify-between gap-6 border-b-black m-auto w-[90vw] bg-[#d8d4d468]">
             <div className="ml-8 flex justify-center items-center font-extrabold transition hover:scale-105 ">on<SiCarto className="text-8xl" /></div>
             <div className=" mr-8 flex items-center justify-center gap-7">
-              <div onClick={()=>{clickRoute("home")}} className="   transition text-2xl text-[#484848] hover:scale-105 hover:text-black">{Page=="home"?<RiHome2Fill />:<RiHome2Line />}</div>
-              <div onClick={()=>{clickRoute("cart")}} className="   transition text-2xl text-[#484848] hover:scale-105 hover:text-black">{Page=="cart"?<HiShoppingCart />:<HiOutlineShoppingCart />}</div>
-              <div onClick={()=>{clickRoute("like")}} className="   transition text-2xl text-[#484848] hover:scale-105 hover:text-black">{Page=="like"?<FaHeart />:<FaRegHeart />}</div>
-              <div onClick={()=>{clickRoute("profile")}} className="transition text-2xl text-[#484848] hover:scale-105 hover:text-black">{Page=="profile"?<RiAccountCircleFill />:<RiAccountCircleLine />}</div>
+              <div onClick={()=>{clickRoute("home")}} className="   transition text-2xl cursor-pointer text-[#484848] hover:scale-105 hover:text-black">{Page=="home"?<RiHome2Fill />:<RiHome2Line />}</div>
+              <div onClick={()=>{clickRoute("cart")}} className="   transition text-2xl cursor-pointer text-[#484848] hover:scale-105 hover:text-black">{Page=="cart"?<HiShoppingCart />:<HiOutlineShoppingCart />}</div>
+              <div onClick={()=>{clickRoute("like")}} className="   transition text-2xl cursor-pointer text-[#484848] hover:scale-105 hover:text-black">{Page=="like"?<FaHeart />:<FaRegHeart />}</div>
+              <div onClick={()=>{clickRoute("profile")}} className="transition text-2xl cursor-pointer text-[#484848] hover:scale-105 hover:text-black">{Page=="profile"?<RiAccountCircleFill />:<RiAccountCircleLine />}</div>
             </div>
           </nav>
         </header>
