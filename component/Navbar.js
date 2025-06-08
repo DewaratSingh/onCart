@@ -48,9 +48,13 @@ const Navbar = () => {
     setloding(false);
   };
 
-  const handleSubmit=async ()=>{
-    
-  }
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    const formData = new FormData(e.target);
+    const name = formData.get("search");
+    const search = encodeURIComponent(name.trim());
+    router.push(`/pages/search?search=${search}`);
+  };
 
   return (
     <div>
@@ -61,10 +65,20 @@ const Navbar = () => {
             <SiCarto className="text-8xl" />
           </div>
 
-          <form onSubmit={handleSubmit} className="pt-2 relative mx-auto text-gray-600 flex items-center justify-center">
-            <input type="text" name="search" placeholder="Search..." className="focus:outline-0 border-2 border-gray-500 text-sm rounded-sm h-10 w-[300px]" />
-            <button type="submit"><CiSearch  className="text-2xl ml-2.5 transition text-2xl cursor-pointer text-[#484848] hover:scale-105 hover:text-black" />
-         </button> </form>
+          <form
+            onSubmit={handleSubmit}
+            className="pt-2 relative mx-auto text-gray-600 flex items-center justify-center"
+          >
+            <input
+              type="text"
+              name="search"
+              placeholder="Search..."
+              className="focus:outline-0 border-2 border-gray-500 text-sm rounded-sm h-10 w-[300px]"
+            />
+            <button type="submit">
+              <CiSearch className="text-2xl ml-2.5 transition text-2xl cursor-pointer text-[#484848] hover:scale-105 hover:text-black" />
+            </button>
+          </form>
 
           <div className=" mr-8 flex items-center justify-center gap-7">
             <div
