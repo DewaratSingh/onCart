@@ -2,41 +2,73 @@
 import axios from "axios";
 import { useRouter } from "next/navigation";
 import React, { useEffect, useState } from "react";
-
+import { MdOutlineRemoveShoppingCart } from "react-icons/md";
 
 const ProductPage = ({ params }) => {
   const [data, setdata] = useState(null);
   const [Image, setImage] = useState(null);
   const router = useRouter();
-  const [cart, setcart] = useState(false);
+  const [cart, setcart] = useState(null);
 
   useEffect(() => {
     const fetchData = async () => {
-      const response = await axios.post("/api/user/getProductInfo", {
-        productId: params.slug,
-      });
+      const token = localStorage.getItem("token");
 
-      const product = response.data.data;
-      setdata(product);
-      setcart(response.data.carted)
-
-      if (product?.image?.length > 0) {
-        setImage(
-          `http://localhost:3000/uploads/${product.folderName}/${product.image[0]}`
+      try {
+        const response = await axios.post(
+          "/api/user/getProductInfo",
+          {
+            productId: params.slug,
+          },
+          {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          }
         );
+
+        const product = response.data.data;
+        setdata(product);
+        setcart(response.data.carted.cart);
+
+        if (product?.image?.length > 0) {
+          setImage(
+            `http://localhost:3000/uploads/${product.folderName}/${product.image[0]}`
+          );
+        }
+      } catch (error) {
+        console.error("Error fetching product:", error);
       }
     };
 
     fetchData();
-  }, [params.slug]);
+  }, []);
 
   const changeImgae = (src) => {
     if (src !== Image) setImage(src);
   };
 
   const addToCart = async () => {
-      const token = localStorage.getItem("token");
+    const token = localStorage.getItem("token");
+
+    try {
       if (cart) {
+        const responce = await axios.post(
+          "/api/user/removeFCart",
+          { cartId: params.slug },
+          {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          }
+        );
+        console.log(responce.data);
+        if (responce.data.message === "Unauthorized") {
+          router.push("/pages/signIn");
+        } else {
+          setcart(false);
+        }
+      } else {
         const responce = await axios.post(
           "/api/user/addToCart",
           { cartId: params.slug },
@@ -47,30 +79,16 @@ const ProductPage = ({ params }) => {
           }
         );
         console.log(responce.data);
-        if (responce.data.message == "Unauthorized") {
-          router.push("/pages/signIn");
-        } else {
-          setcart(false);
-        }
-      } else {
-        const responce = await axios.post(
-          "/api/user/addInLike",
-          { cartId: params.slug },
-          {
-            headers: {
-              Authorization: `Bearer ${token}`,
-            },
-          }
-        );
-        console.log(responce.data);
-        if (responce.data.message == "Unauthorized") {
+        if (responce.data.message === "Unauthorized") {
           router.push("/pages/signIn");
         } else {
           setcart(true);
         }
       }
-    };
-
+    } catch (error) {
+      console.error("Cart update error:", error);
+    }
+  };
 
   return (
     <div className="bg-white">
@@ -111,7 +129,7 @@ const ProductPage = ({ params }) => {
             {/* Product details */}
             <div className="w-full max-w-lg mx-auto mt-5 md:ml-8 md:mt-0 md:w-1/2">
               <h3 className="text-gray-700 uppercase text-lg">{data?.name}</h3>
-              <span className="text-[red] line-through mt-3 ">
+              <span className="text-[red] line-through mt-3">
                 ₹{data?.price}
               </span>
               <span className="text-gray-500 mt-3 ml-7">
@@ -144,18 +162,27 @@ const ProductPage = ({ params }) => {
                 </button>
                 <button
                   onClick={addToCart}
-                 className={ cart ? "mx-2 bg-amber-400 text-gray-600 border rounded-md p-2 hover:bg-gray-200 focus:outline-none" : "mx-2 text-gray-600 border rounded-md p-2 hover:bg-gray-200 focus:outline-none"}  >
-                  <svg
-                    className="h-5 w-5"
-                    fill="none"
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth="2"
-                    viewBox="0 0 24 24"
-                    stroke="currentColor"
-                  >
-                    <path d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z"></path>
-                  </svg>
+                  className={
+                    cart
+                      ? "mx-2  text-gray-600 border rounded-md p-2  focus:outline-none"
+                      : "mx-2  bg-amber-400 text-gray-600 border rounded-md p-2  focus:outline-none"
+                  }
+                >
+                  {cart ? (
+                    <MdOutlineRemoveShoppingCart />
+                  ) : (
+                    <svg
+                      className="h-5 w-5"
+                      fill="none"
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth="2"
+                      viewBox="0 0 24 24"
+                      stroke="currentColor"
+                    >
+                      <path d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z" />
+                    </svg>
+                  )}
                 </button>
               </div>
             </div>
@@ -163,7 +190,7 @@ const ProductPage = ({ params }) => {
 
           <div className="mt-1">
             <div className="grid gap-2 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 mt-4">
-              {/* Other related products if needed */}
+              {/* Related products placeholder */}
             </div>
           </div>
         </div>

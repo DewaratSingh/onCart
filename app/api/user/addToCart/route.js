@@ -17,7 +17,7 @@ export async function POST(request) {
     const { cartId } = await request.json();
 
     const user = await User.findByIdAndUpdate(
-      cartId,
+      userId,
       {
         $push: { cart: cartId },
       },

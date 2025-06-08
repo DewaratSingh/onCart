@@ -1,6 +1,8 @@
 import connectDB from "@/library/connectDB";
 import product from "@/model/product";
 import User from "@/model/user";
+import jwt from "jsonwebtoken";
+import { NextResponse } from "next/server";
 
 export async function POST(request) {
   try {
@@ -10,18 +12,20 @@ export async function POST(request) {
 
     const { productId } = await request.json();
     const data = await product.findById(productId);
-    let carted=false
+    let carted = {};
+
     try {
       if (token) {
         const decoded = jwt.verify(token, process.env.JWT_SECRET);
         const userId = decoded.id;
         const user = await User.findById(userId);
-        carted= user.cart.includes(data._id.toString());
+        carted.cart=user.cart.includes(productId.toString());
+        console.log("data")
       }
-    } catch {}
-
-    return Response.json({ data }, { carted});
+    } catch { console.log("data12")}
+ console.log(token)
+    return NextResponse.json({ data, carted});
   } catch (error) {
-    return Response.json({ message: "Internal Server Error" }, { status: 500 });
+    return NextResponse.json({ message: "Internal Server Error" }, { status: 500 });
   }
 }
