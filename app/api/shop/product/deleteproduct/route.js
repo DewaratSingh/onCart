@@ -7,7 +7,7 @@ import path from "path";
 import { rm } from "fs/promises";
 
 export async function POST(request) {
- // try {
+  try {
     const token = request.headers.get("authorization")?.split(" ")[1];
 
     if (!token) {
@@ -41,8 +41,8 @@ export async function POST(request) {
     await rm(folderPath, { recursive: true, force: true });
 
     return Response.json({ message: "Product deleted successfully" });
-  // } catch (error) {
-  //   console.error("DELETE ERROR:", error);
-  //   return Response.json({ message: "Internal Server Error" });
-  // }
+   } catch (error) {
+     console.error("DELETE ERROR:", error);
+     return Response.json({ message: "Internal Server Error" });
+   }
 }

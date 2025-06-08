@@ -21,7 +21,7 @@ const page = () => {
     if (response.status === 201) {
       e.target.reset();
       localStorage.setItem("token",response.data.token)
-      router.push("/");
+      router.back();
     } else {
       toast(response.data.message);
     }
