@@ -56,9 +56,7 @@ export async function POST(request) {
       }
     }
 
-    if (token) {
-    } else {
-    }
+
 
     return Response.json({ data }, { status: 201 });
   } catch (error) {

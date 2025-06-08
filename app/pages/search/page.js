@@ -41,7 +41,7 @@ const SearchPage = () => {
       ) : (
         <ul>
           {data.map((item, index) => (
-            <Product image={item.image} id={item.id} price={item.price} realPrice={item.realPrice} name={item.name} description={item.description} like={item.like} />
+            <Product key={index} image={item.image} id={item.id} price={item.price} realPrice={item.realPrice} name={item.name} description={item.description} like={item.like} />
           ))}
         </ul>
       )}

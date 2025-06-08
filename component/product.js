@@ -5,9 +5,11 @@ import { FaHeart } from "react-icons/fa";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 
-const Product = ({ name, like, description, price, realPrice, image, id }) => {
+const Product = ({ name, like, description, price, realPrice, image, id ,setupdate}) => {
   const router = useRouter();
 const [liked, setliked] = useState(like)
+
+
 
   const likefun = async () => {
     const token = localStorage.getItem("token");
@@ -44,10 +46,15 @@ const [liked, setliked] = useState(like)
         setliked(true);
       }
     }
+    setupdate((pre)=>{pre+1})
   };
 
+
+  const showProduct=async ()=>{
+     router.push(`/pages/product/${id}`)
+  }
   return (
-    <div className="mt-7  sm:grid-cols-2 lg:grid-cols-4 xl:gap-x-8  inline-block ml-5 transition hover:scale-105">
+    <div onClick={showProduct} className="mt-7  sm:grid-cols-2 lg:grid-cols-4 xl:gap-x-8  inline-block ml-5 transition hover:scale-105">
       <div className="group relative w-[300px]">
         <div className="aspect-h-1 aspect-w-1 w-full overflow-hidden rounded-md bg-gray-200 lg:aspect-none group-hover:opacity-75 lg:h-80">
           <img
