@@ -34,11 +34,11 @@ const SearchPage = () => {
   return (
     <div>
      
-      {data.length === 0 ? (
+      {data?.length === 0 ? (
         <p>No results found.</p>
       ) : (
         <ul>
-          {data.map((item, index) => (
+          {data?.map((item, index) => (
             <Product setupdate={setupdate}  key={index} image={item.image} id={item.id} price={item.price} realPrice={item.realPrice} name={item.name} description={item.description} like={item.like} />
           ))}
         </ul>

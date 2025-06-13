@@ -2,6 +2,7 @@ import connectDB from "@/library/connectDB";
 import product from "@/model/product";
 import User from "@/model/user";
 import jwt from "jsonwebtoken";
+import { NextResponse } from "next/server";
 
 export async function GET(request) {
   try {
@@ -10,10 +11,12 @@ export async function GET(request) {
     if (!token) {
       return Response.json({ message: "Unauthorized" });
     }
-
+try{
     const decoded = jwt.verify(token, process.env.JWT_SECRET);
     const userId = decoded.id;
-
+}catch{
+   return NextResponse.redirect(new URL('/', request.url));
+}
     await connectDB();
 
     const user = await User.findById(userId);

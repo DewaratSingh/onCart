@@ -16,9 +16,6 @@ const orderSchemas = new mongoose.Schema(
       type: String,
       required: true,
     },
-    DOD: {
-      type: Date,
-    },
   },
   { timestamps: true }
 );

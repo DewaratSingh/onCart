@@ -9,8 +9,7 @@ const userSchema = new mongoose.Schema({
   like: { type: Array, default: [] },
   cart: { type: Array, default: [] },
   address: { type: String, required: false },
-  cartHistory: { type: Array, default: [] },
-  activeCart: { type: Array, default: [] },
+  order: { type: Array, default: [] },
 });
 
 const User = mongoose.models.User || mongoose.model("User", userSchema);
