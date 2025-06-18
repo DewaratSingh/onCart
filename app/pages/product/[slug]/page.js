@@ -5,6 +5,9 @@ import { MdOutlineRemoveShoppingCart } from "react-icons/md";
 import { useEffect, useState } from "react";
 import { useParams, useRouter } from "next/navigation";
 import axios from "axios";
+import { FaRegStar } from "react-icons/fa6";
+import { FaRegStarHalfStroke } from "react-icons/fa6";
+import { FaStar } from "react-icons/fa6";
 
 const ProductPage = () => {
   const [data, setdata] = useState(null);
@@ -41,9 +44,6 @@ const ProductPage = () => {
       fetchData();
     }
   }, [params.slug]);
-
-
-
 
   const changeImgae = (src) => {
     if (src !== Image) setImage(src);
@@ -161,8 +161,8 @@ const ProductPage = () => {
 
               <div className="mt-3">
                 <label className="text-gray-700 text-sm">Rating:</label>
-                <div className="flex items-center mt-1">
-                  {data?.rating} star
+                <div className="flex items-center text-yellow-400 mt-1">
+                  {/* {data?.rating}  */}<FaStar/><FaStar/><FaStar/><FaRegStarHalfStroke/><FaRegStar/>
                 </div>
               </div>
 
@@ -215,7 +215,6 @@ const ProductPage = () => {
           </div>
         </div>
       </main>
-
       <footer className="bg-gray-200">
         <div className="container mx-auto px-6 py-3 flex justify-between items-center">
           <a
