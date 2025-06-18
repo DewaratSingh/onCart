@@ -3,9 +3,23 @@ import React from "react";
 import { FaCheck } from "react-icons/fa";
 import { useRouter } from "next/navigation";
 import { MdOutlineDiscount } from "react-icons/md";
+import { ToastContainer,toast } from "react-toastify";
+import axios from "axios";
 
-const Buy = ({ address, price, cutPrice, discount }) => {
+const Buy = ({ address, price, cutPrice, discount,idArray }) => {
   const router=useRouter()
+
+  const Buy_data=async ()=>{
+    try{
+      console.log(idArray)
+      const responce=await axios.post("/api/user/order",{productIdarray: idArray})
+console.log(responce.data)
+    }catch{
+
+    }
+  }
+ 
+
   return (
     <div className="sm:w-[30vw] w-full ">
       <div>
@@ -44,6 +58,7 @@ const Buy = ({ address, price, cutPrice, discount }) => {
         Cash On Deleviry
       </div>
       <button
+      onClick={()=>{Buy_data()}}
         type="submit"
         className=" mt-5 w-full bg-indigo-600 hover:bg-indigo-700 text-white font-medium py-2.5 rounded-lg transition-colors"
       >

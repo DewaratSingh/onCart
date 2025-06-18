@@ -5,6 +5,7 @@ import jwt from "jsonwebtoken";
 import { cookies } from "next/headers";
 import Link from "next/link";
 import Footer from "@/component/Footer";
+import { redirect } from "next/navigation";
 
 export default async function CartPage() {
   await connectDB();
@@ -13,9 +14,7 @@ export default async function CartPage() {
   const token = cookieStore.get("token")?.value;
 
   if (!token) {
-    return (
-      <div className="text-center mt-10">Please login to see your cart.</div>
-    );
+       redirect("/pages/signIn")
   }
 
   let data = [];

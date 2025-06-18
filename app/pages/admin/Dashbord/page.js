@@ -8,6 +8,7 @@ const page = () => {
   const router = useRouter();
   const [data, setData] = useState(null);
   const [loading, setLoading] = useState(true);
+  const [order, setorder] = useState([]);
 
   const product_data = async () => {
     try {
@@ -20,16 +21,27 @@ const page = () => {
       setLoading(false);
     }
   };
+  const get_order = async () => {
+    try {
+      const response = await axios.get("/api/getOrder");
+      console.log(response.data.data);
+      setorder(response.data.data);
+    } catch (err) {
+      setorder(null);
+    } finally {
+      setLoading(false);
+    }
+  };
 
   useEffect(() => {
     product_data();
+    get_order();
   }, []);
 
-const updateProduct = (item) => {
-  const foundItem = data.find(element => element.id === item);
-  console.log(foundItem);
-};
-
+  const updateProduct = (item) => {
+    const foundItem = data.find((element) => element.id === item);
+    console.log(foundItem);
+  };
 
   if (loading) return <div>Loading...</div>;
 
@@ -39,10 +51,26 @@ const updateProduct = (item) => {
         id,
       });
       toast(response.data.message);
-      
+
       product_data();
     } catch (error) {
       toast.error(error.response?.data?.message || "Failed to delete product");
+    }
+  };
+
+  const handleStatusChange = async (e, orderId) => {
+    const newStatus = e.target.value;
+    alert(newStatus)
+
+    try {
+      const responce=await axios.post(`/api/shop/product/updateStatus`, {
+        status: newStatus,
+        orderId,
+      });
+      console.log(responce.data)
+    } catch (err) {
+      console.error("Failed to update status:", err);
+      alert("Error updating status");
     }
   };
 
@@ -59,6 +87,8 @@ const updateProduct = (item) => {
           + Add Product
         </button>
       </div>
+      <div className="font-extrabold">Your Product</div>
+
       <div className="flex flex-col">
         <span className="flex bg-[#442dd783] ">
           <div className="w-[120px] border-r-2">Name</div>
@@ -109,6 +139,44 @@ const updateProduct = (item) => {
           ))
         ) : (
           <div>No products found</div>
+        )}
+      </div>
+
+      <div className="font-extrabold">Your Order</div>
+      <div className="flex flex-col">
+        <span className="flex bg-[#442dd783] ">
+          <div className="w-[120px] border-r-2">Name</div>
+          <div className="w-[120px] border-r-2">Price</div>
+          <div className="w-[250px] border-r-2">Costomer</div>
+          <div className="w-[200px] border-r-2">Status</div>
+        </span>
+        {order?.length > 0 ? (
+          order?.map((item, index) => (
+            <div key={index} className="flex bg-[#d5d1d1] border-b-2">
+              <div className="w-[120px] border-r-2">{item.name || "name"}</div>
+              <div className="w-[120px] border-r-2">
+                {item.realPrice || "Price"}
+              </div>
+              <div className="w-[250px] border-r-2">{item.id || "id"}</div>
+              <div className="w-[200px] border-r-2">
+                <select
+                  name="status"
+                  id={`status-${index}`}
+                  className="w-full"
+                  defaultValue={item.status}
+                  onChange={(e) => handleStatusChange(e, item.oid)}
+                >
+                  <option value="Pending">Pending</option>
+                  <option value="Cancled By shop">Cancled By shop</option>
+                  <option value="Shipped">Shipped</option>
+                  <option value="Out for Delivery">Out for Delivery</option>
+                  <option value="Delivered">Delivered</option>
+                </select>
+              </div>
+            </div>
+          ))
+        ) : (
+          <div>No Order found</div>
         )}
       </div>
     </div>

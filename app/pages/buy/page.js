@@ -8,7 +8,6 @@ import jwt from "jsonwebtoken";
 import Link from "next/link";
 import Buy from "@/component/buy";
 
-
 export default async function BuyPage({ searchParams }) {
   const id = searchParams.id;
   let pro = id.split(" ");
@@ -26,7 +25,8 @@ export default async function BuyPage({ searchParams }) {
   let data = [];
   let address = "";
   let TotalPrice = 0;
-  let cutPrice=0
+  let cutPrice = 0;
+  let idArray = [];
 
   try {
     const decoded = jwt.verify(token, process.env.JWT_SECRET);
@@ -55,11 +55,13 @@ export default async function BuyPage({ searchParams }) {
       rating: p.rating,
     }));
 
-    data.forEach((index)=>{
-        TotalPrice+=index.realPrice;
-        cutPrice+=index.price
-    })
-
+    data.forEach((index) => {
+      TotalPrice += index.realPrice;
+      cutPrice += index.price;
+    });
+    data.forEach((index) => {
+      idArray.push(index.id)
+    });
   } catch (err) {
     return <div className="text-center mt-10">Invalid or expired session.</div>;
   }
@@ -70,7 +72,7 @@ export default async function BuyPage({ searchParams }) {
         <h2 className="text-xl ml-9 font-bold tracking-tight text-gray-900">
           {data.length == 0 ? "No Carted Product" : "Your Cart Items"}
         </h2>
-        <section >
+        <section>
           <div className="w-full   justify-center">
             <div className="w-full m-auto flex flex-wrap gap-4">
               {data.map((product) => (
@@ -112,8 +114,13 @@ export default async function BuyPage({ searchParams }) {
           </div>
         </section>
       </main>
-            <Buy address={address} price={TotalPrice} cutPrice={cutPrice}discount={(TotalPrice*100)/cutPrice}  />
-
+      <Buy
+        address={address}
+        price={TotalPrice}
+        cutPrice={cutPrice}
+        discount={(TotalPrice * 100) / cutPrice}
+        idArray={idArray}
+      />
     </div>
   );
 }

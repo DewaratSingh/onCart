@@ -5,6 +5,7 @@ import jwt from "jsonwebtoken";
 import { cookies } from "next/headers";
 import Link from "next/link";
 import Footer from "@/component/Footer";
+import { redirect } from "next/navigation";
 
 export default async function CartPage() {
   await connectDB();
@@ -13,9 +14,7 @@ export default async function CartPage() {
   const token = cookieStore.get("token")?.value;
 
   if (!token) {
-    return (
-      <div className="text-center mt-10">Please login to see your cart.</div>
-    );
+    redirect("/pages/signIn");
   }
 
   let data = [];
@@ -104,13 +103,16 @@ export default async function CartPage() {
         </section>
       </main>
       <div className="fixed left-0 bottom-6 w-full">
-        <Link className="w-full" href={`http://localhost:3000/pages/buy?id=${ids}`}>
+        <Link
+          className="w-full"
+          href={`http://localhost:3000/pages/buy?id=${ids}`}
+        >
           <button className="px-8 py-2 w-full bg-indigo-600 cursor-pointer text-white text-sm font-medium rounded hover:bg-indigo-500 focus:outline-none">
             Order Now
           </button>
         </Link>
       </div>
-      <Footer/>
+      <Footer />
     </div>
   );
 }

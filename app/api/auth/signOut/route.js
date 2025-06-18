@@ -1,14 +1,15 @@
-import { cookies } from "next/headers";
 import { NextResponse } from "next/server";
 
 export async function POST() {
-  const cookieStore = cookies();
+  const response = NextResponse.redirect(new URL("/pages/signIn","http://localhost:3000"));
 
-  cookieStore.set("token", "", {
-    httpOnly: true,
-    path: "/",
+  response.cookies.set({
+    name: "token",
+    value: "",
     maxAge: 0,
+    path: "/",
+    httpOnly: true,
   });
 
-  return NextResponse.json({ message: "Cookie cleared" });
+  return response;
 }

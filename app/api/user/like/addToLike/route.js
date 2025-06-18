@@ -24,7 +24,6 @@ export async function POST(request) {
       },
       { new: true }
     );
-console.log("hi")
     return NextResponse.json({
       message: "Liked",
     });

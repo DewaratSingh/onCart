@@ -6,9 +6,9 @@ const shopSchema = new mongoose.Schema({
   products: [{ type: mongoose.Schema.Types.ObjectId, ref: "Product" }],
   address: { type: String, required: true },
   contact: { type: String, required: true },
-  orders:[],
+  orders: { type: Array, default: [] },
 });
 
-const Shop =mongoose.models.Shop || mongoose.model("Shop", shopSchema);
+const Shop = mongoose.models.Shop || mongoose.model("Shop", shopSchema);
 
 export default Shop;
