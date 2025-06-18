@@ -27,14 +27,14 @@ export async function GET(request) {
 
     for (let i = 0; i < shop.orders.length; i++) {
       const order = await Order.findById(shop.orders[i]);
-      const pro = await product.findById(order.products); // assuming order.products is product ID
+      const pro = await product.findById(order.products);
 
       data.push({
         oid:order._id,
-        id: order.customer,         // ✅ From order, not shop
+        id: order.customer,     
         name: pro.name,
         realPrice: pro.realPrice,
-        status: order.status,       // ✅ From order
+        status: order.status,       
       });
     }
 
